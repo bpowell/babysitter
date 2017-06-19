@@ -15,3 +15,6 @@ make
 
 # Running tests
 In the build directory: `ctest -V`
+
+# Running the program
+In the build directory: `./babysitter`
