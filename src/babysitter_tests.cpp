@@ -65,6 +65,31 @@ TEST(ValidTime, NotSetTMStruct) {
     ASSERT_FALSE(validtime(t));
 }
 
+TEST(GetTime, EmptyString) {
+    struct tm t;
+    ASSERT_FALSE(gettime(&t, ""));
+}
+
+TEST(GetTime, TimeAfter5PM) {
+    struct tm t;
+    ASSERT_TRUE(gettime(&t, "17:25"));
+}
+
+TEST(GetTime, TimeBefore4AM) {
+    struct tm t;
+    ASSERT_TRUE(gettime(&t, "03:25"));
+}
+
+TEST(GetTime, TimeOutSideWindow) {
+    struct tm t;
+    ASSERT_FALSE(gettime(&t, "13:25"));
+}
+
+TEST(GetTime, JunkData) {
+    struct tm t;
+    ASSERT_FALSE(gettime(&t, "fsfhdsjkfhskd"));
+}
+
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();

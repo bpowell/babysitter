@@ -5,5 +5,6 @@
 #include <string>
 
 bool validtime(const struct tm t);
+bool gettime(struct tm *t, const std::string time);
 
 #endif
