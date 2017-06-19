@@ -15,6 +15,9 @@ bool validtime(const struct tm t) {
 
 bool gettime(struct tm* t, const std::string time) {
     memset(t, 0, sizeof(struct tm));
+    //Need to set the year to make std::difftime work correctly on macOS
+    //  We don't really care what year it is.
+    t->tm_year = 1970;
 
     //The best way to do this would be to write a parser or find some library to
     //  get time in any format.
