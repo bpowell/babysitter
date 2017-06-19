@@ -90,6 +90,33 @@ TEST(GetTime, JunkData) {
     ASSERT_FALSE(gettime(&t, "fsfhdsjkfhskd"));
 }
 
+TEST(CalculatePay, StartAt5BedAt7HomeBy10) {
+    struct tm start, bed, end;
+    gettime(&start, "17:00");
+    gettime(&bed, "19:00");
+    gettime(&end, "22:00");
+
+    ASSERT_EQ(calculatepay(start, bed, end), 48.00);
+}
+
+TEST(CalculatePay, StartAt5BedAt7HomeBy930) {
+    struct tm start, bed, end;
+    gettime(&start, "17:00");
+    gettime(&bed, "19:00");
+    gettime(&end, "21:30");
+
+    ASSERT_EQ(calculatepay(start, bed, end), 40.00);
+}
+
+TEST(CalculatePay, StartAt5BedAt7HomeBy1AM) {
+    struct tm start, bed, end;
+    gettime(&start, "17:00");
+    gettime(&bed, "19:00");
+    gettime(&end, "01:00");
+
+    ASSERT_EQ(calculatepay(start, bed, end), 80.00);
+}
+
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();

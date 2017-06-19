@@ -35,3 +35,41 @@ bool gettime(struct tm* t, const std::string time) {
 
     return validtime(*t);
 }
+
+double calculatepay(struct tm starttime, struct tm bedtime, struct tm endtime) {
+    struct tm midnight;
+    time_t start, end, bed;
+
+    //Make midnight be the next day
+    memset(&midnight, 0, sizeof(struct tm));
+    midnight.tm_year = 1970;
+    midnight.tm_mday++;
+
+    start = mktime(&starttime);
+    end = mktime(&endtime);
+    bed = mktime(&bedtime);
+
+    int totaltime = difftime(end, start);
+    int starttobedtime = difftime(bed, start);
+    int bedtoendtime = difftime(end, bed);
+    int bedtomidnight = difftime(mktime(&midnight), bed);
+    int midnighttoendtime = difftime(end, mktime(&midnight));
+
+    //I'm assuming that the babysitter always puts the child to bed
+    // and that bedtime is before midnight
+    double pay = (starttobedtime / 60.0 / 60.0) * 12.00;
+    if (bedtoendtime > bedtomidnight) {
+        //get pay from bed time to midnight
+        pay += (bedtomidnight / 60.0 / 60.0) * 8.00;
+    } else {
+        //get pau from bed time to end time
+        pay += (bedtoendtime / 60 / 60) * 8;
+    }
+
+    if(midnighttoendtime > 0) {
+        //If the babysitter stays past midnight
+        pay += (midnighttoendtime / 60 / 60) * 16;
+    }
+
+    return pay;
+}
